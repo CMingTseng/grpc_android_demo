@@ -30,6 +30,8 @@ package com.lovoo.ubuntudroid.hellogrpc;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.util.concurrent.UncheckedExecutionException;
+
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,18 +44,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.common.util.concurrent.UncheckedExecutionException;
-
-import java.util.concurrent.TimeUnit;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.grpc.ChannelImpl;
-import io.grpc.examples.helloworld.GreeterGrpc;
 import io.grpc.examples.helloworld.HelloRequest;
-import io.grpc.examples.helloworld.HelloResponse;
-import io.grpc.transport.okhttp.OkHttpChannelBuilder;
 
 /**
  * This Fragment displays UI to handle communication with the bundled GRPC server.
@@ -80,7 +74,7 @@ public class MainActivityFragment extends Fragment {
     @Bind(R.id.main_button_send_request)
     Button mSendButton;
 
-    private ChannelImpl mChannel;
+//    private ChannelImpl mChannel;
 
     public MainActivityFragment () {
     }
@@ -117,15 +111,15 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void shutdownChannel () {
-        if (mChannel != null) {
-            try {
-                mChannel.shutdown().awaitTerminated(1, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                // FIXME this call seems fishy as it interrupts the main thread
-                Thread.currentThread().interrupt();
-            }
-        }
-        mChannel = null;
+//        if (mChannel != null) {
+//            try {
+//                mChannel.shutdown().awaitTerminated(1, TimeUnit.SECONDS);
+//            } catch (InterruptedException e) {
+//                // FIXME this call seems fishy as it interrupts the main thread
+//                Thread.currentThread().interrupt();
+//            }
+//        }
+//        mChannel = null;
     }
 
     private class SendHelloTask extends AsyncTask<Void, Void, String> {
@@ -173,15 +167,16 @@ public class MainActivityFragment extends Fragment {
         @Override
         protected String doInBackground ( Void... params ) {
             try {
-                if (mChannel == null) {
-                    mChannel = OkHttpChannelBuilder.forAddress(mHost, mPort).build();
-                }
-                GreeterGrpc.GreeterBlockingStub greeterStub = GreeterGrpc.newBlockingStub(
-                        mChannel);
+//                if (mChannel == null) {
+//                    mChannel = OkHttpChannelBuilder.forAddress(mHost, mPort).build();
+//                }
+//                GreeterGrpc.GreeterBlockingStub greeterStub = GreeterGrpc.newBlockingStub(
+//                        mChannel);
                 HelloRequest helloRequest = HelloRequest.newBuilder().setName("Android").build();
 
-                HelloResponse helloResponse = greeterStub.sayHello(helloRequest);
-                return "SERVER: " + helloResponse.getMessage();
+//                HelloResponse helloResponse = greeterStub.sayHello(helloRequest);
+//                return "SERVER: " + helloResponse.getMessage();
+                return "SERVER: ";
             } catch ( SecurityException | UncheckedExecutionException e ) {
                 e.printStackTrace();
                 return "ERROR: " + e.getMessage();

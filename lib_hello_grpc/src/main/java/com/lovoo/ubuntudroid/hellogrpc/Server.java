@@ -36,18 +36,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import io.grpc.Metadata;
-import io.grpc.ServerCall;
-import io.grpc.ServerCallHandler;
-import io.grpc.ServerImpl;
-import io.grpc.ServerInterceptor;
-import io.grpc.ServerInterceptors;
-import io.grpc.examples.helloworld.GreeterGrpc;
-import io.grpc.examples.helloworld.HelloRequest;
-import io.grpc.examples.helloworld.HelloResponse;
-import io.grpc.stub.StreamObserver;
-import io.grpc.transport.netty.NettyServerBuilder;
-
 /**
  * A simple GRPC server implementation which understands the protocol defined in hello.proto.
  *
@@ -91,7 +79,7 @@ public class Server {
     private boolean useTls = false;
 
     private ScheduledExecutorService executor;
-    private ServerImpl server;
+//    private ServerImpl server;
 
     private void parseArgs(String[] args) {
         boolean usage = false;
@@ -143,33 +131,33 @@ public class Server {
 
     private void start() throws Exception {
         executor = Executors.newSingleThreadScheduledExecutor();
-        server = NettyServerBuilder.forPort(port)
-                .addService(ServerInterceptors.intercept(
-                        GreeterGrpc.bindService(new GreeterGrpc.Greeter() {
-                            @Override
-                            public void sayHello ( HelloRequest request, StreamObserver<HelloResponse> responseObserver ) {
-                                responseObserver.onValue(HelloResponse.newBuilder().setMessage("Hello " + request.getName()).build());
-                                responseObserver.onCompleted();
-                            }
-                        }),
-                        new ServerInterceptor() {
-                            @Override
-                            public <RequestT, ResponseT> ServerCall.Listener<RequestT> interceptCall ( String method,
-                                                                                                       ServerCall<ResponseT> serverCall,
-                                                                                                       Metadata.Headers headers,
-                                                                                                       ServerCallHandler<RequestT, ResponseT> serverCallHandler ) {
-                                System.out.println("Received call to " + method);
-                                return serverCallHandler.startCall(method, serverCall, headers);
-                            }
-                        }))
-                .build().start();
+//        server = NettyServerBuilder.forPort(port)
+//                .addService(ServerInterceptors.intercept(
+//                        GreeterGrpc.bindService(new GreeterGrpc.Greeter() {
+//                            @Override
+//                            public void sayHello ( HelloRequest request, StreamObserver<HelloResponse> responseObserver ) {
+//                                responseObserver.onValue(HelloResponse.newBuilder().setMessage("Hello " + request.getName()).build());
+//                                responseObserver.onCompleted();
+//                            }
+//                        }),
+//                        new ServerInterceptor() {
+//                            @Override
+//                            public <RequestT, ResponseT> ServerCall.Listener<RequestT> interceptCall ( String method,
+//                                                                                                       ServerCall<ResponseT> serverCall,
+//                                                                                                       Metadata.Headers headers,
+//                                                                                                       ServerCallHandler<RequestT, ResponseT> serverCallHandler ) {
+//                                System.out.println("Received call to " + method);
+//                                return serverCallHandler.startCall(method, serverCall, headers);
+//                            }
+//                        }))
+//                .build().start();
     }
 
     private void stop() throws Exception {
-        server.shutdownNow();
-        if (!server.awaitTerminated(5, TimeUnit.SECONDS)) {
-            System.err.println("Timed out waiting for server shutdown");
-        }
+//        server.shutdownNow();
+//        if (!server.awaitTerminated(5, TimeUnit.SECONDS)) {
+//            System.err.println("Timed out waiting for server shutdown");
+//        }
         MoreExecutors.shutdownAndAwaitTermination(executor, 5, TimeUnit.SECONDS);
     }
 }
