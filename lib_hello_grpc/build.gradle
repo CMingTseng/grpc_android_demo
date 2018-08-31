@@ -1,14 +1,6 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.4.1'
-    }
-}
-
 apply plugin: 'java'
 apply plugin: 'com.google.protobuf'
+apply plugin: 'idea'
 
 //region protobuf code generation
 sourceSets {
@@ -23,8 +15,6 @@ sourceSets {
 
 protocDep = "com.google.protobuf:protoc:3.0.0-alpha-3"
 protobufNativeCodeGenPluginDeps = ["grpc:io.grpc:protoc-gen-grpc-java:0.7.1"]
-
-apply plugin: 'idea'
 
 // Allow intellij projects to refer to generated-sources
 idea {
@@ -42,10 +32,9 @@ idea {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation 'com.google.guava:guava:18.0'
     implementation 'com.google.protobuf:protobuf-java:3.0.0-alpha-2'
-    implementation 'com.google.code.findbugs:jsr305:3.0.0'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
     // we cannot use the following dependency as com.google.auth:google-auth-library-oauth2-http:0.1.0 seems to be unavailable right now
     //implementation 'io.grpc:grpc-all:0.7.1'
 
