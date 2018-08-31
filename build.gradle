@@ -1,15 +1,36 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        javasource = JavaVersion.VERSION_1_8
+        javatarget = JavaVersion.VERSION_1_8
+        kotlin_version = '1.2.50'
+        compileVersion = 27
+        targetVersion = 27
+        minVersion = 21
+        buildVersion = '28.0.2'
+        supportLibVersion = '27.1.1'
+        lifecycleLibVersion = '1.1.1'
+        runnerVersion = '0.5'
+        rulesVersion = '0.5'
+        UiAutomatorLibVersion = '2.1.2'
+        FirebaseLibVersion = '11.8.0'
+        versionName = '0.0.0'
+    }
     repositories {
-        maven { url "https://maven.google.com"}
+        maven { url "https://maven.google.com" }
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.4.1'
+        classpath "gradle.plugin.com.gladed.gradle.androidgitversion:gradle-android-git-version:0.3.3"
+        classpath 'com.google.gms:google-services:3.1.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.6'
+//FIXME  version 0.4.1 is too older can not match build gradle
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -17,9 +38,11 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "https://maven.google.com"}
+        maven { url "https://maven.google.com" }
         google()
         jcenter()
         mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
     }
 }
